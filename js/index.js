@@ -19,7 +19,11 @@ const showCategories = (categories) => {
 const fetchCategoryNews = (id, categoryName) => {
     url = `https://openapi.programming-hero.com/api/news/category/${id}`;
     fetch(url)
-        .then(res => res.json()).then(data => showAllNews(data.data, categoryName))
+        .then(res => res.json())
+        .then(data => {
+            fetchData = data.data
+            showAllNews(data.data, categoryName)
+        })
 }
 const showAllNews = (data, categoryName) => {
     // console.log(data,categoryName);
@@ -130,4 +134,23 @@ const showNewsDetails = data => {
             </div>
         `
 
+}
+
+// show the Trending news 
+const showTrendingNews=()=>{
+    
+    let trendingNews = fetchData.filter(singleNews=> singleNews.others_info.is_trending=== true);
+    const categoryName = document.getElementById('category-name').innerText;
+    // console.log(trendingNews)
+    showAllNews(trendingNews,categoryName)
+}
+
+// show today picks
+
+const showTodayPick=()=>{
+    // console.log(fetchData);
+    const todayPicks = fetchData.filter(singleNews=>singleNews.others_info.is_todays_pick===true);
+    const categoryName = document.getElementById('category-name').innerText;
+    console.log(todayPicks)
+    showAllNews(todayPicks, categoryName)
 }
